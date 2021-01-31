@@ -6,6 +6,15 @@ This (https://framagit.org/medoc92/recollwebui) is an updated clone of
 Koniu's original version on GitHub (https://github.com/koniu/recoll-webui),
 which has not been updated lately, and is now slightly obsolete.
 
+As compared to the original, this version has an additional dependancy when
+running the webui-standalone.py server (i.e. not with apache): it uses the
+python3-waitress module which must be installed. This makes
+webui-standalone quite suitable for moderate multiaccess loads with no
+authentication needs.
+
+An updated version of the original doc follows.
+
+
 **Recoll WebUI** is a Python-based web interface for **Recoll** text search
 tool for Unix/Linux.
 
@@ -24,7 +33,7 @@ All you need to use the WebUI is:
 * The Python waitress package. You can remove this dependance and run with
   the internal bottle server by editing webui-standalone.py
 * Recoll 1.20+
-* web browser
+* WEB browser
 
 
 Usage
@@ -67,7 +76,8 @@ Example WSGI/Apache2 config::
 
 Remarks:
 * Without "python-path=" you might see errors that it can't import webui 
-* Run the WSGIDeamonProcess run under the username (user=xyz) of the user that you want to have exposed via web
+* Run the WSGIDaemonProcess run under the username (user=xyz) of the user
+  that you want to have exposed via web.
 
 
 Example Upstart-Script for Ubuntu to run the indexer as daemon::

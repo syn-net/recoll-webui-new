@@ -900,7 +900,13 @@ class Bottle(object):
             out = out[0][0:0].join(out) # b'abc'[0:0] -> b''
         # Encode unicode strings
         if isinstance(out, unicode):
-            out = out.encode(response.charset)
+            # Jf change: in case python3 encounters un-decodable file
+            # names, it will use surrogateescape to convert them to
+            # str. So, use the error handler by default. Apart from
+            # non-decodable paths, there should be no encoding errors
+            # at this point, so this should have no general
+            # consequences.
+            out = out.encode(response.charset, 'surrogateescape')
         # Byte Strings are just returned
         if isinstance(out, bytes):
             if 'Content-Length' not in response:

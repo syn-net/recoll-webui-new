@@ -188,13 +188,19 @@ def get_config():
 def get_dirs(tops, depth):
     v = []
     for top in tops:
+        # We do the conversion to bytes here, because Python versions
+        # before 3.7 won't do the right thing if the locale is C,
+        # which would be the case with a default apache install
+        top = top.encode('utf-8', 'surrogateescape')
         dirs = [top]
         for d in range(1, depth+1):
-            dirs = dirs + glob.glob(top + '/*' * d)
+            dirs = dirs + glob.glob(top + b'/*' * d)
         dirs = filter(lambda f: os.path.isdir(f), dirs)
-        top_path = top.rsplit('/', 1)[0]
-        dirs = [w.replace(top_path+'/', '', 1) for w in dirs]
+        top_path = top.rsplit(b'/', 1)[0]
+        dirs = [w.replace(top_path+b'/', b'', 1) for w in dirs]
         v = v + dirs
+        for i in range(len(v)):
+            v[i] = v[i].decode('utf-8', 'surrogateescape')
     return ['<all>'] + v
 #}}}
 #{{{ get_query

@@ -199,8 +199,8 @@ def get_dirs(tops, depth):
         top_path = top.rsplit(b'/', 1)[0]
         dirs = [w.replace(top_path+b'/', b'', 1) for w in dirs]
         v = v + dirs
-        for i in range(len(v)):
-            v[i] = v[i].decode('utf-8', 'surrogateescape')
+    for i in range(len(v)):
+        v[i] = v[i].decode('utf-8', 'surrogateescape')
     return ['<all>'] + v
 #}}}
 #{{{ get_query

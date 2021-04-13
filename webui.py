@@ -329,10 +329,14 @@ def recoll_search(q):
         d['time'] = timestr(d['mtime'], config['timefmt'])
         if 'snippets' in q and q['snippets']:
             if 'highlight' in q and q['highlight']:
-                d['snippet'] = query.makedocabstract(
-                    doc, highlighter)
+                d['snippet'] = query.makedocabstract(doc, highlighter)
             else:
                 d['snippet'] = query.makedocabstract(doc)
+            if not d['snippet']:
+                try:
+                    d['snippet'] = doc['abstract']
+                except:
+                    pass
         #for n,v in d.items():
         #    print("type(%s) is %s" % (n,type(v)))
         results.append(d)

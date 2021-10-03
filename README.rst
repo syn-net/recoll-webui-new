@@ -32,8 +32,9 @@ All you need to use the WebUI is:
   the module is built with.
 * The Python waitress package. You can remove this dependance and run with
   the internal bottle server by editing webui-standalone.py
-* Recoll 1.20+
-* WEB browser
+* Recoll 1.20+ and the Recoll Python3 extension (e.g. the python3-recoll package on Debian-derived
+  systems).
+* A WEB browser
 
 
 Usage

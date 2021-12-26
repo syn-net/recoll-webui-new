@@ -182,6 +182,12 @@ def get_config():
     val = 0 if val is None else int(val)
     config['rclc_nosettings'] = val
 
+    val = str(rclconf.getConfParam('webui_defaultsort'))
+    config['defsortidx'] = 0
+    for i in range(len(SORTS)):
+        if SORTS[i][0] == val or SORTS[i][1] == val:
+            config['defsortidx'] = i
+            break
     return config
 #}}}
 #{{{ get_dirs
@@ -204,13 +210,14 @@ def get_dirs(tops, depth):
     return ['<all>'] + v
 #}}}
 #{{{ get_query
-def get_query():
+def get_query(config=None):
+    defsortidx = config['defsortidx'] if config and 'defsortidx' in config else 0
     query = {
         'query': select([bottle.request.query.query, '']),
         'before': select([bottle.request.query.before, '']),
         'after': select([bottle.request.query.after, '']),
         'dir': select([bottle.request.query.dir, '', '<all>'], [None, '']),
-        'sort': select([bottle.request.query.sort, SORTS[0][0]]),
+        'sort': select([bottle.request.query.sort, SORTS[defsortidx][0]], [None, '']),
         'ascending': int(select([bottle.request.query.ascending, 0], [None, ''])),
         'page': int(select([bottle.request.query.page, 0], [None, ''])),
         'highlight': int(select([bottle.request.query.highlight, 1], [None, ''])),
@@ -356,14 +363,14 @@ def server_static(path):
 def main():
     config = get_config()
     return { 'dirs': get_dirs(config['dirs'], config['dirdepth']),
-            'query': get_query(), 'sorts': SORTS, 'config': config}
+            'query': get_query(config), 'sorts': SORTS, 'config': config}
 #}}}
 #{{{ results
 @bottle.route('/results')
 @bottle.view('results')
 def results():
     config = get_config()
-    query = get_query()
+    query = get_query(config)
     qs = query_to_recoll_string(query)
     res, nres, timer = recoll_search(query)
     if config['maxresults'] == 0:
@@ -379,7 +386,8 @@ def results():
 #{{{ preview
 @bottle.route('/preview/<resnum:int>')
 def preview(resnum):
-    query = get_query()
+    config = get_config()
+    query = get_query(config)
     qs = query_to_recoll_string(query)
     rclq = recoll_initsearch(query)
     if resnum > rclq.rowcount - 1:
@@ -397,7 +405,8 @@ def preview(resnum):
 #{{{ download
 @bottle.route('/download/<resnum:int>')
 def edit(resnum):
-    query = get_query()
+    config = get_config()
+    query = get_query(config)
     qs = query_to_recoll_string(query)
     rclq = recoll_initsearch(query)
     if resnum > rclq.rowcount - 1:
@@ -426,7 +435,8 @@ def edit(resnum):
 #{{{ json
 @bottle.route('/json')
 def get_json():
-    query = get_query()
+    config = get_config()
+    query = get_query(config)
     qs = query_to_recoll_string(query)
     bottle.response.headers['Content-Type'] = 'application/json'
     bottle.response.headers['Content-Disposition'] = \
@@ -445,7 +455,7 @@ def get_json():
 @bottle.route('/csv')
 def get_csv():
     config = get_config()
-    query = get_query()
+    query = get_query(config)
     query['page'] = 0
     query['snippets'] = 0
     qs = query_to_recoll_string(query)

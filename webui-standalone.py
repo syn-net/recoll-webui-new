@@ -7,7 +7,11 @@ import webui
 parser = argparse.ArgumentParser()
 parser.add_argument('-a', '--addr', default='127.0.0.1',help='address to bind to [127.0.0.1]')
 parser.add_argument('-p', '--port', default='8080', type=int, help='port to listen on [8080]')
+parser.add_argument('-c', '--config', default=None, type=str, help='configuration directory')
 args = parser.parse_args()
+
+if args.config:
+    os.environ["RECOLL_CONFDIR"] = args.config
 
 # change to webui's directory and import
 if os.path.dirname(__file__) != "":

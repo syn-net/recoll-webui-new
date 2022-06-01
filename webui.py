@@ -129,6 +129,11 @@ def get_dbdir(confdir):
 #}}}
 #{{{ get_config
 def get_config():
+    # Arrange for apache wsgi SetEnv values to be reflected in the os environment.
+    # This allows people to use either method
+    for k in ("RECOLL_CONFDIR", "RECOLL_EXTRACONFDIRS"):
+        if  k in bottle.request.environ:
+            os.environ[k] = bottle.request.environ[k]
     config = {}
     envdir = safe_envget('RECOLL_CONFDIR')
     # get useful things from recoll.conf

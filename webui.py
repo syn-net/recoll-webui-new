@@ -16,12 +16,12 @@ from recoll import recoll, rclextract, rclconfig
 def msg(s):
     print("%s" % s, file=sys.stderr)
 
-# use ujson if avalible (faster than built in json)
+# use ujson if avalaible (faster than built in json)
 try:
     import ujson as json
 except ImportError:
     import json
-    msg("ujson module not found, using (slower) built-in json module instead")
+    #msg("ujson module not found, using (slower) built-in json module instead")
 
 
 g_fscharset=sys.getfilesystemencoding()
@@ -140,7 +140,7 @@ def get_config():
     rclconf = rclconfig.RclConfig(envdir)
     config['confdir'] = rclconf.getConfDir()
     config['dirs'] = dict.fromkeys([os.path.expanduser(d) for d in
-                      shlex.split(rclconf.getConfParam('topdirs'))],
+                                    shlex.split(rclconf.getConfParam('topdirs'))],
                                    config['confdir'])
     # add topdirs from extra config dirs
     extraconfdirs = safe_envget('RECOLL_EXTRACONFDIRS')
@@ -154,6 +154,16 @@ def get_config():
         config['extraconfdirs'] = None
         config['extradbs'] = None
     config['stemlang'] = rclconf.getConfParam('indexstemminglanguages')
+
+    # Possibly adjust user config defaults with data from recoll.conf. Some defaults which are
+    # generally suitable like dirdepth=2 can be unworkable on big data sets (causing init errors so
+    # that they can't even be adjusted from the UI). The 2nd parameter asks for an int conversion
+    fetches = [("context", 1), ("stem", 1),("timefmt", 0),("dirdepth", 1),("maxchars", 1),
+               ("maxresults", 1), ("perpage", 1), ("csvfields", 0), ("title_link", 0)]
+    for k, isint in fetches:
+        value = rclconf.getConfParam("webui_" + k)
+        if value:
+            DEFAULTS[k] = int(value) if isint else value
     # get config from cookies or defaults
     for k, v in DEFAULTS.items():
         value = select([bottle.request.get_cookie(k), v])
@@ -168,8 +178,7 @@ def get_config():
     config['mounts'] = {}
     for d in config['dirs']:
         name = 'mount_%s' % urlquote(d,'')
-        config['mounts'][d] = select([bottle.request.get_cookie(name),
-                                      'file://%s' % d], [None, ''])
+        config['mounts'][d] = select([bottle.request.get_cookie(name), 'file://%s' % d], [None, ''])
 
     # Parameters set by the admin in the recoll configuration
     # file. These override anything else, so read them last

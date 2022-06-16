@@ -15,13 +15,14 @@ authentication needs.
 An updated version of the original doc follows.
 
 
-**Recoll WebUI** is a Python-based web interface for **Recoll** text search
+**Recoll WebUI** is a Python-based web interface for the **Recoll** text search
 tool for Unix/Linux.
 
 .. image:: http://i.imgur.com/n8qTnBg.png
 
-* WebUI homepage: https://github.com/koniu/recoll-webui
+* WebUI homepage: https://framagit.org/medoc92/recollwebui
 * Recoll homepage: http://www.lesbonscomptes.com/recoll
+* Original WebUI homepage: https://github.com/koniu/recoll-webui
 
 Requirements
 ============
@@ -29,7 +30,7 @@ Requirements
 All you need to use the WebUI is:
 
 * Python 3. On Windows you currently need Python 3.7 because this is what
-  the module is built with.
+  the Recoll extension module is built with.
 * The Python waitress package. You can remove this dependance and run with
   the internal bottle server by editing webui-standalone.py
 * Recoll 1.20+ and the Recoll Python3 extension (e.g. the python3-recoll package on Debian-derived
@@ -40,13 +41,13 @@ All you need to use the WebUI is:
 Usage
 =====
 
-**Recoll WebUI** can be used as a standalone application or through a web
-server via WSGI/CGI. Regardless of the mode of operation you need Recoll
-to be configured on your system as the WebUI only provides a front-end for
-searching and does not handle index configuration etc.
+**Recoll WebUI** can be used as a standalone application or through a web server via
+WSGI/CGI. Regardless of the mode of operation you need Recoll to be configured on your system as the
+WebUI only provides a front-end for searching and does not handle index configuration etc.
 
 Run standalone
 --------------
+
 Run ``webui-standalone.py`` and connect to ``http://localhost:8080``.
 
 There's some optional command-line arguments available::
@@ -54,9 +55,17 @@ There's some optional command-line arguments available::
     -h, --help            show this help message and exit
     -a ADDR, --addr ADDR  address to bind to [127.0.0.1]
     -p PORT, --port PORT  port to listen on [8080]
+    -c CONFDIR, --config CONFDIR Recoll configuration directory to use
 
-The standalone application can be configured to run automatically using
-systemd. See the file README.systemd.
+The standalone application can be configured to run automatically using systemd. See the file
+`README-systemd.rst <README-systemd.rst>`_.
+
+Environment variables:
+
+- `RECOLL_CONFDIR` the recoll configuration directory. This is overriden by a -c option.
+- `RECOLL_EXTRACONFDIRS` a space-separated list of external indexes to query in addition to the main
+  one.
+
 
 Run as WSGI/CGI
 ---------------
@@ -65,7 +74,7 @@ See the following link for a complete run-through:
 
 https://www.lesbonscomptes.com/recoll/pages/recoll-webui-install-wsgi.html
 
-Example WSGI/Apache2 config::
+Example WSGI/Apache2 config, assuming that the code is in /var/recoll-webui-master::
 
         WSGIDaemonProcess recoll user=recoll group=recoll threads=5 display-name=%{GROUP} python-path=/var/recoll-webui-master
         WSGIScriptAlias /recoll /var/recoll-webui-master/webui-wsgi.py
@@ -76,36 +85,16 @@ Example WSGI/Apache2 config::
         </Directory>
 
 Remarks:
+
 * Without "python-path=" you might see errors that it can't import webui 
 * Run the WSGIDaemonProcess run under the username (user=xyz) of the user
   that you want to have exposed via web.
 
 
-Example Upstart-Script for Ubuntu to run the indexer as daemon::
 
+Example user Crontab entry to have the indexer at least once a day::
 
-        description "recoll indexer"
-
-        start on runlevel [2345]
-        stop on runlevel [!2345]
-        
-        respawn
-        
-        pre-start script
-                exec sudo -u recoll sh -c "/usr/local/share/recoll/examples/rclmon.sh start"
-        end script
-        
-        pre-stop script
-                exec sudo -u recoll sh -c "/usr/local/share/recoll/examples/rclmon.sh stop"
-        end script
-
-Remarks:
-* You need to configure the user for which the indexer should run ("sudo -u [myuser])
-
-
-Example Crontab entry to have the indexer at least once a day::
-
-        22 5    * * *   recoll  recollindex
+        22 5    * * *   /usr/bin/recollindex
 
 
 

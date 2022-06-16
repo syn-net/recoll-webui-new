@@ -91,6 +91,35 @@ Remarks:
   that you want to have exposed via web.
 
 
+User configuration defaults
+---------------------------
+
+New on 2022-06-15.
+
+There are a number of parameters with initial defaults which the user can change through a Web
+interface page (by clicking the `Settings` button), and which are persisted in a cookie.
+
+Some of the initial defaults may not be appropriate for your configuration. For example the default
+depth of 2 for building the directory selection tree may be too much on a big data set (and cause
+initialisation errors).
+
+The initial defaults can be changed by setting values in the main recoll configuration file
+($RECOLL_CONFDIR/recoll.conf):
+
+- webui_context (30) the size of the abstract snippets in words.
+- webui_maxchars (500) total maximum size for the abstract shown with each result.
+- webui_stem (1) queries will use stemming (or not).
+- webui_timefmt (%c) format of the time display.
+- webui_dirdepth (2) depth of the directory selection tree. Beware if your data set has many
+  directories.
+- webui_maxresults (0) limit the number of results (0 means no limit).
+- webui_perpage (25) number of results per page.
+- webui_csvfields (filename title author size time mtype url) fields extracted in CSV or JSON dumps.
+- webui_title_link (download) action performed if you click the result title (or 'open', 'preview').
+
+
+Running the indexer
+-------------------
 
 Example user Crontab entry to have the indexer at least once a day::
 

@@ -1,4 +1,4 @@
-%include header title=" / settings"
+%include("header", title=" / settings")
 <div id="settings-box">
 <form action="set" method="get">
 	<b>Find similar</b> <small class="gray">(1 or 0, show "squats" and "squatter")</small>
@@ -39,4 +39,4 @@
 	<a href="./"><input type="button" value="Cancel"></a>
 </form>
 </div>
-%include footer
+%include("footer")

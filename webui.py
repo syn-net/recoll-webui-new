@@ -162,7 +162,7 @@ def get_config():
                ("maxresults", 1), ("perpage", 1), ("csvfields", 0), ("title_link", 0)]
     for k, isint in fetches:
         value = rclconf.getConfParam("webui_" + k)
-        if value:
+        if value is not None:
             DEFAULTS[k] = int(value) if isint else value
     # get config from cookies or defaults
     for k, v in DEFAULTS.items():

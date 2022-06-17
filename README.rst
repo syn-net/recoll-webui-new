@@ -109,13 +109,22 @@ The initial defaults can be changed by setting values in the main recoll configu
 - webui_context (30) the size of the abstract snippets in words.
 - webui_maxchars (500) total maximum size for the abstract shown with each result.
 - webui_stem (1) queries will use stemming (or not).
-- webui_timefmt (%c) format of the time display.
+- webui_timefmt ("%c") format of the time display.
 - webui_dirdepth (2) depth of the directory selection tree. Beware if your data set has many
   directories.
 - webui_maxresults (0) limit the number of results (0 means no limit).
 - webui_perpage (25) number of results per page.
-- webui_csvfields (filename title author size time mtype url) fields extracted in CSV or JSON dumps.
-- webui_title_link (download) action performed if you click the result title (or 'open', 'preview').
+- webui_csvfields ("filename title author size time mtype url") fields extracted in CSV or JSON dumps.
+- webui_title_link ("download") action performed if you click the result title (or 'open',
+  'preview').
+
+The following are not changeable from the user interface:
+
+- webui_nojsoncsv (0) If set, disable downloading results as JSON or CSV.
+- webui_maxperpage (0) If set to non-zero, limits the maximum value of results per page settable
+  through the UI.
+- webui_nosettings (0) do not show settings options to users.
+- webui_defaultsort ("Relevancy") default sort field.
 
 
 Running the indexer

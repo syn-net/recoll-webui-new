@@ -327,7 +327,10 @@ def recoll_search(q):
         else:
             query.scroll(offset, mode='absolute')
 
-    highlighter = HlMeths()
+    if 'highlight' in q and q['highlight']:
+        highlighter = HlMeths()
+    else:
+        highlighter = None
     for i in range(config['perpage']):
         try:
             doc = query.fetchone()
@@ -349,10 +352,7 @@ def recoll_search(q):
         d['sha'] = hashlib.sha1((d['url']+d['ipath']).encode('utf-8')).hexdigest()
         d['time'] = timestr(d['mtime'], config['timefmt'])
         if 'snippets' in q and q['snippets']:
-            if 'highlight' in q and q['highlight']:
-                d['snippet'] = query.makedocabstract(doc, highlighter)
-            else:
-                d['snippet'] = query.makedocabstract(doc)
+            d['snippet'] = query.makedocabstract(doc, methods=highlighter)
             if not d['snippet']:
                 try:
                     d['snippet'] = doc['abstract']
@@ -411,9 +411,20 @@ def preview(resnum):
     xt = rclextract.Extractor(doc)
     tdoc = xt.textextract(doc.ipath)
     if tdoc.mimetype == 'text/html':
+        ishtml = 1
         bottle.response.content_type = 'text/html; charset=utf-8'
     else:
+        ishtml = 0
         bottle.response.content_type = 'text/plain; charset=utf-8'
+    if 'highlight' in query and query['highlight']:
+        hl = HlMeths()
+        txt = rclq.highlight(tdoc.text, ishtml=ishtml, methods=hl)
+        pos = txt.find('<head>')
+        if pos >= 0:
+            txt = txt[0:pos+6] + \
+                '<link rel="stylesheet" type="text/css" href="../static/style.css">' + txt[pos+6:]
+        bottle.response.content_type = 'text/html; charset=utf-8'
+        return txt
     return tdoc.text
 #}}}
 #{{{ download

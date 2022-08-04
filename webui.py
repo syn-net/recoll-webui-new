@@ -420,9 +420,13 @@ def preview(resnum):
         hl = HlMeths()
         txt = rclq.highlight(tdoc.text, ishtml=ishtml, methods=hl)
         pos = txt.find('<head>')
+        ssref = "<link rel='stylesheet' type='text/css' href='../static/style.css'>"
         if pos >= 0:
-            txt = txt[0:pos+6] + \
-                '<link rel="stylesheet" type="text/css" href="../static/style.css">' + txt[pos+6:]
+            txt = txt[0:pos+6] + ssref + txt[pos+6:]
+        else:
+            txt = "<html><head>" + ssref + \
+                "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'></head><body>"+ \
+                txt
         bottle.response.content_type = 'text/html; charset=utf-8'
         return txt
     return tdoc.text

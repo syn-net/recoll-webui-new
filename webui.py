@@ -420,12 +420,12 @@ def preview(resnum):
         hl = HlMeths()
         txt = rclq.highlight(tdoc.text, ishtml=ishtml, methods=hl)
         pos = txt.find('<head>')
-        ssref = "<link rel='stylesheet' type='text/css' href='../static/style.css'>"
+        ssref = '<link rel="stylesheet" type="text/css" href="../static/style.css">'
         if pos >= 0:
             txt = txt[0:pos+6] + ssref + txt[pos+6:]
         else:
-            txt = "<html><head>" + ssref + \
-                "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'></head><body>"+ \
+            txt = '<html><head>' + ssref + \
+                '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>'+ \
                 txt
         bottle.response.content_type = 'text/html; charset=utf-8'
         return txt
@@ -443,22 +443,19 @@ def edit(resnum):
     rclq.scroll(resnum)
     doc = rclq.fetchone()
     bottle.response.content_type = doc.mimetype
-    pathismine = False
-
     xt = rclextract.Extractor(doc)
     path = xt.idoctofile(doc.ipath, doc.mimetype)
-    pathismine = True
-
-    if (not doc.ipath) and "filename" in doc.keys():
+    if "filename" in doc.keys():
         filename = doc.filename
     else:
         filename = os.path.basename(path)
-    bottle.response.headers['Content-Disposition'] = \
-        'attachment; filename="%s"' % filename
+    bottle.response.headers['Content-Disposition'] = f'attachment; filename="{filename}"'
     bottle.response.headers['Content-Length'] = os.stat(path).st_size
     f = open(path, 'rb')
-    if pathismine:
+    try:
         os.unlink(path)
+    except:
+        pass
     return f
 #}}}
 #{{{ json

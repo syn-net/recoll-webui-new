@@ -1,10 +1,5 @@
 %import sys
-%py3k = sys.version_info >= (3, 0, 0)
-%if py3k:
-	%from urllib.parse import urlencode
-%else:
-	%from urllib import urlencode
-%end
+%from urllib.parse import urlencode
 %import math
 
 %q = dict(query)

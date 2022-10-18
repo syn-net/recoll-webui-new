@@ -10,7 +10,7 @@ import csv
 import io
 import string
 import shlex
-from urllib.parse import urlencode, quote as urlquote
+from urllib.parse import quote as urlquote
 from recoll import recoll, rclextract, rclconfig
 
 def msg(s):

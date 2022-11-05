@@ -36,9 +36,14 @@ All you need to use the WebUI is:
   systems).
 * A WEB browser
 
+Installation and Usage on MS-Windows
+====================================
 
-Usage
-=====
+We have a `separate Web page
+<https://www.lesbonscomptes.com/recoll/faqsandhowtos/webui-on-windows.html>_` for this.
+
+Installation and Usage on Linux
+===============================
 
 **Recoll WebUI** can be used as a standalone application or through a web server via
 WSGI/CGI. Regardless of the mode of operation you need Recoll to be configured on your system as the

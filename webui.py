@@ -39,6 +39,7 @@ DEFAULTS = {
     'perpage': 25,
     'csvfields': 'filename title author size time mtype url',
     'title_link': 'download',
+    'collapsedups': 0,
 }
 
 # sort fields/labels
@@ -54,27 +55,28 @@ SORTS = [
 # doc fields
 FIELDS = [
     # exposed by python api
-    'ipath',
-    'filename',
-    'title',
+    'abstract',
     'author',
-    'fbytes',
+    'collapsecount',
     'dbytes',
-    'size',
-    'fmtime',
     'dmtime',
+    'fbytes',
+    'filename',
+    'fmtime',
+    'ipath',
+    'keywords',
     'mtime',
     'mtype',
     'origcharset',
-    'sig',
     'relevancyrating',
+    'sig',
+    'size',
+    'title',
     'url',
-    'abstract',
-    'keywords',
     # calculated
-    'time',
-    'snippet',
     'label',
+    'snippet',
+    'time',
 ]
 #}}}
 #{{{  functions
@@ -159,7 +161,8 @@ def get_config():
     # generally suitable like dirdepth=2 can be unworkable on big data sets (causing init errors so
     # that they can't even be adjusted from the UI). The 2nd parameter asks for an int conversion
     fetches = [("context", 1), ("stem", 1),("timefmt", 0),("dirdepth", 1),("maxchars", 1),
-               ("maxresults", 1), ("perpage", 1), ("csvfields", 0), ("title_link", 0)]
+               ("maxresults", 1), ("perpage", 1), ("csvfields", 0), ("title_link", 0),
+               ("collapsedups", 0)]
     for k, isint in fetches:
         value = rclconf.getConfParam("webui_" + k)
         if value is not None:
@@ -291,7 +294,7 @@ def recoll_initsearch(q):
     query.sortby(q['sort'], q['ascending'])
     try:
         qs = query_to_recoll_string(q)
-        query.execute(qs, config['stem'], config['stemlang'])
+        query.execute(qs, config['stem'], config['stemlang'], collapseduplicates=config['collapsedups'])
     except Exception as ex:
         msg("Query execute failed: %s" % ex)
         pass

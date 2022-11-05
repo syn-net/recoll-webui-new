@@ -20,6 +20,9 @@
     %if len(d['ipath']) > 0:
         <div class="search-result-ipath">[{{d['ipath']}}]</div>
     %end
+    %if "collapsecount" in d and d["collapsecount"]:
+        <div class="search-result-dups">&nbsp;&nbsp;(duplicates: {{d["collapsecount"]}})</div>
+    %end
     %if 'author' in d and len(d['author']) > 0:
         <div class="search-result-author">{{d['author']}}</div>
     %end

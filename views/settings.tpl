@@ -3,6 +3,9 @@
 <form action="set" method="get">
 	<b>Find similar</b> <small class="gray">(1 or 0, show "squats" and "squatter")</small>
 	<input name="stem" value={{stem}}>
+	<b>Collapse duplicate results</b> <small class="gray">(1 or 0, only show one of multiple
+        results with same content")</small>
+	<input name="collapsedups" value={{collapsedups}}>
 	<b>Max results</b> <small class="gray">(maximum number of results to show)</small>
 	<input name="maxresults" value={{maxresults}}>
 	<hr>

@@ -80,6 +80,7 @@ body {	margin: 0; font-family: sans-serif }
 .search-result-links a:hover { text-decoration: underline }
 .search-result:hover > .search-result-links { visibility: visible }
 .search-result-date { color: #777; font-size: 8pt; float: right; margin-bottom: 7px; }
+.search-result-dups { color: #777; font-size: 8pt; margin-left: 10px; margin-top: 3px; }
 .search-result-size { color: #777; font-size: 8pt; float: right; display: none; }
 .search-result-highlight { color: #7E1212; font-weight: bold; }
 .gray { color: #aaa }

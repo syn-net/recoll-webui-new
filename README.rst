@@ -39,8 +39,7 @@ All you need to use the WebUI is:
 Installation and Usage on MS-Windows
 ====================================
 
-We have a `separate Web page
-<https://www.lesbonscomptes.com/recoll/faqsandhowtos/webui-on-windows.html>_` for this.
+We have a `separate Web page <https://www.lesbonscomptes.com/recoll/faqsandhowtos/webui-on-windows.html>`_ for this.
 
 Installation and Usage on Linux
 ===============================

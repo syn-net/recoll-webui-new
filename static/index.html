@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Recoll Search Index | virgo.lan</title>
+		<link href='/static/styles.css'>
+		<script type='module' src='/static/main.js'></script>
+		<!-- <script src='/static/extra.js'></script> -->
+		<style>
+			button {
+			}
+	
+			input[type='search'] {
+				width: 224px;
+			}
+
+			li {
+				display: inline;
+				list-style-type: none; 
+				padding: 12px;
+			}
+
+			footer {
+				margin-top: 16px;
+			}
+
+			.align-center {
+				text-align: center;
+				margin-left: auto;
+				margin-right: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<main id='main'>
+		<section>
+		<h1>Welcome to virgo.lan</h1>
+		<form name="search" action="/results" method="GET">
+			<input name='query' type='search'></input>
+			<button>Search Index</button>
+		</form>
+		</section>
+		</main>
+
+		<footer class='align-center'>
+		<ul>
+			<li><a href='/results'>Search Index</a></li>
+			<li><a target='_blank' href='http://virgo.lan:9667/mpd.ogg'>mpd.ogg</a></li>
+			<li><a target='_blank' href='https://github.com/syn-net/recoll-webui.git'>recoll-webui.git</a></li>
+			<li><a href='/sitemap'>Sitemap</a></li>
+		</ul>
+		</footer>
+	</body>
+</html>

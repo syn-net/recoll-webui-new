@@ -1,0 +1,13 @@
+[
+  {
+    title: 'recoll-webui'
+    group: 'syn-net'
+    paths: [
+      'syn-net/recoll-webui.git'
+    ]
+    devMode: false
+    settings:
+      'editor.tabLength': 2
+      'editor.showInvisibles': true
+  }
+]
